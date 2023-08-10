@@ -1,16 +1,21 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import './App.css';
 
+interface Todos {
+    name: string,
+    completed: boolean;
+}
+
 function App() {
     const [inputValue, setInputValue] = useState('');
-    const [todos, setTodos] = useState<string[]>([]);
+    const [todos, setTodos] = useState<Todos[]>([]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     };
 
     const handleSubmit = () => {
-        setTodos(prevState => [...prevState, inputValue]);
+        setTodos(prevState => [...prevState, { name: inputValue, completed: false }]);
         setInputValue('');
     };
 
@@ -18,6 +23,13 @@ function App() {
         if (e.key === 'Enter') {
             handleSubmit();
         }
+    };
+
+    const completeTodo = (index: number) => {
+        const newTodos = [...todos];
+        console.log(!newTodos[index].completed);
+        newTodos[index].completed = !newTodos[index].completed;
+        setTodos(newTodos);
     };
 
     const removeTodo = (index: number) => {
@@ -42,7 +54,11 @@ function App() {
                     <ul>
                         {todos.map((todo, index) => {
                             return (
-                                <li key={index}>{todo} <button onClick={() => removeTodo(index)}>trash</button></li>
+                                <li key={index} style={{ color: todo.completed ? 'red' : 'black' }}>
+                                    <button onClick={() => completeTodo(index)}>complete</button>
+                                    {todo.name}
+                                    <button onClick={() => removeTodo(index)}>trash</button>
+                                </li>
                             );
                         })}
                     </ul>
