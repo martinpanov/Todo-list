@@ -20,6 +20,12 @@ function App() {
         }
     };
 
+    const removeTodo = (index: number) => {
+        const newTodos = [...todos];
+        newTodos.splice(index, 1);
+        setTodos(newTodos);
+    };
+
     return (
         <main>
             <section>
@@ -34,7 +40,11 @@ function App() {
                         value={inputValue}
                     />
                     <ul>
-                        {todos.map((todo, index) => <li key={index}>{todo}</li>)}
+                        {todos.map((todo, index) => {
+                            return (
+                                <li key={index}>{todo} <button onClick={() => removeTodo(index)}>trash</button></li>
+                            );
+                        })}
                     </ul>
                     <div>
                         <span>5 items left</span>
