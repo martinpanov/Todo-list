@@ -41,33 +41,22 @@ function App() {
         setDisplayedTodos(newTodos);
     };
 
-    const filterByCompleted = () => {
-        const newTodos = [...todos].filter(todo => todo.completed);
+    const filterTodos = (criteria: string) => {
+        let newTodos = [...todos];
+
+        if (criteria === 'completed') {
+            newTodos = newTodos.filter(todo => todo.completed);
+        } else if (criteria === 'active') {
+            newTodos = newTodos.filter(todo => !todo.completed);
+        } else if (criteria === 'ClearCompleted') {
+            newTodos = newTodos.filter(todo => !todo.completed);
+            setTodos(newTodos);
+        }
 
         if (newTodos.length < 1) {
             return;
         }
 
-        setDisplayedTodos(newTodos);
-    };
-
-    const filterByAll = () => {
-        setDisplayedTodos([...todos]);
-    };
-
-    const filterByActive = () => {
-        const newTodos = [...todos].filter(todo => !todo.completed);
-
-        if (newTodos.length < 1) {
-            return;
-        }
-
-        setDisplayedTodos(newTodos);
-    };
-
-    const deleteCompleted = () => {
-        const newTodos = [...todos].filter(todo => !todo.completed);
-        setTodos(newTodos);
         setDisplayedTodos(newTodos);
     };
 
@@ -97,10 +86,10 @@ function App() {
                     </ul>
                     <div>
                         <span>5 items left</span>
-                        <button onClick={() => filterByAll()}>All</button>
-                        <button onClick={() => filterByActive()}>Active</button>
-                        <button onClick={() => filterByCompleted()}>Completed</button>
-                        <button onClick={() => deleteCompleted()}>Clear Completed</button>
+                        <button onClick={() => filterTodos('all')}>All</button>
+                        <button onClick={() => filterTodos('active')}>Active</button>
+                        <button onClick={() => filterTodos('completed')}>Completed</button>
+                        <button onClick={() => filterTodos('ClearCompleted')}>Clear Completed</button>
                     </div>
                 </div>
             </section>
