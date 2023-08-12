@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import './App.css';
 
 interface Todos {
@@ -11,13 +11,23 @@ function App() {
     const [todos, setTodos] = useState<Todos[]>([]);
     const [displayedTodos, setDisplayedTodos] = useState<Todos[]>([]);
 
+    useEffect(() => {
+        const localStorageData = localStorage.getItem('todos');
+        if (localStorageData) {
+            setTodos(JSON.parse(localStorageData));
+            setDisplayedTodos(JSON.parse(localStorageData));
+        }
+    }, []);
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     };
 
     const handleSubmit = () => {
-        setTodos(prevState => [...prevState, { name: inputValue, completed: false }]);
-        setDisplayedTodos(prevState => [...prevState, { name: inputValue, completed: false }]);
+        const newTodos = [...todos, { name: inputValue, completed: false }];
+        setTodos(newTodos);
+        setDisplayedTodos(newTodos);
+        localStorage.setItem('todos', JSON.stringify(newTodos));
         setInputValue('');
     };
 
@@ -32,6 +42,7 @@ function App() {
         newTodos[index].completed = !newTodos[index].completed;
         setTodos(newTodos);
         setDisplayedTodos(newTodos);
+        localStorage.setItem('todos', JSON.stringify(newTodos));
     };
 
     const removeTodo = (index: number) => {
@@ -39,6 +50,7 @@ function App() {
         newTodos.splice(index, 1);
         setTodos(newTodos);
         setDisplayedTodos(newTodos);
+        localStorage.setItem('todos', JSON.stringify(newTodos));
     };
 
     const filterTodos = (criteria: string) => {
@@ -85,7 +97,7 @@ function App() {
                         })}
                     </ul>
                     <div>
-                        <span>5 items left</span>
+                        <span>{todos.filter(todo => !todo.completed).length} items left</span>
                         <button onClick={() => filterTodos('all')}>All</button>
                         <button onClick={() => filterTodos('active')}>Active</button>
                         <button onClick={() => filterTodos('completed')}>Completed</button>
