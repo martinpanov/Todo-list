@@ -85,7 +85,6 @@ main {
 }
 
 .todo-section__change-status:hover {
-    cursor: pointer;
     background-image: linear-gradient(
         192deg,
         hsl(192, 100%, 67%),
@@ -103,9 +102,6 @@ main {
     color: hsl(237.93, 15.18%, 37.45%);
 }
 
-.todo-section__remove-todo {
-    cursor: pointer;
-}
 
 .todo-section__actions {
     display: flex;
@@ -123,9 +119,34 @@ main {
 }
 
 .todo-section__buttons:hover {
-    color: hsl(221.39deg 73.15% 42.35%);;
+    color: hsl(236, 33%, 92%);
 }
 
 .todo-section__actions .selected-action {
-    color: hsl(221.39deg 73.15% 42.35%);;
+    color: hsl(221.39deg 73.15% 42.35%);
+}
+
+@media (min-width: 768px) {
+    .todo-section__content {
+        max-width: 768px;
+    }
+
+    #todo-section {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 1024px) {
+    .todo-section__change-status:hover {
+        cursor: pointer;
+    }
+
+    .todo-section__remove-todo {
+        cursor: pointer;
+    }
+
+    .todo-section__buttons:hover {
+        cursor: pointer;
+    }
 }

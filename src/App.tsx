@@ -10,7 +10,7 @@ function App() {
     const [inputValue, setInputValue] = useState('');
     const [todos, setTodos] = useState<Todos[]>([]);
     const [displayedTodos, setDisplayedTodos] = useState<Todos[]>([]);
-    const [selectedAction, setSelectedAction] = useState('');
+    const [selectedAction, setSelectedAction] = useState('all');
 
     useEffect(() => {
         const localStorageData = localStorage.getItem('todos');
