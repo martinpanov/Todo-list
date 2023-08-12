@@ -10,6 +10,7 @@ function App() {
     const [inputValue, setInputValue] = useState('');
     const [todos, setTodos] = useState<Todos[]>([]);
     const [displayedTodos, setDisplayedTodos] = useState<Todos[]>([]);
+    const [selectedAction, setSelectedAction] = useState('');
 
     useEffect(() => {
         const localStorageData = localStorage.getItem('todos');
@@ -58,11 +59,15 @@ function App() {
 
         if (criteria === 'completed') {
             newTodos = newTodos.filter(todo => todo.completed);
+            setSelectedAction('completed');
         } else if (criteria === 'active') {
             newTodos = newTodos.filter(todo => !todo.completed);
+            setSelectedAction('active');
         } else if (criteria === 'ClearCompleted') {
             newTodos = newTodos.filter(todo => !todo.completed);
             setTodos(newTodos);
+        } else if (criteria === 'all') {
+            setSelectedAction('all');
         }
 
         if (newTodos.length < 1) {
@@ -74,34 +79,41 @@ function App() {
 
     return (
         <main>
-            <section>
-                <img src="" alt="" />
+            <section id='hero'>
+                <img className='hero__img' src="/bg-desktop-dark.jpg" alt="background" />
             </section>
-            <section>
-                <div>
-                    <h1>Todo</h1>
+            <section id='todo-section'>
+                <div className='todo-section__content'>
+                    <h1 className='todo-section__title'>Todo</h1>
                     <input type="text"
+                        className='todo-section__input'
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
                         value={inputValue}
+                        placeholder='Create a new todo...'
                     />
-                    <ul>
+                    <ul className='todo-section__list' role='list'>
                         {displayedTodos.map((todo, index) => {
                             return (
-                                <li key={index} style={{ color: todo.completed ? 'red' : 'black' }}>
-                                    <button onClick={() => completeTodo(index)}>{todo.completed ? 'uncomplete' : 'complete'}</button>
-                                    {todo.name}
-                                    <button onClick={() => removeTodo(index)}>trash</button>
+                                <li className='todo-section__list-item' key={index}>
+                                    <button className='todo-section__change-status btn' onClick={() => completeTodo(index)}><img src="/icon-check.svg" alt="check" /></button>
+                                    <span className={`todo-section__todo-name ${todo.completed ? 'completed' : ''}`}>
+                                        {todo.name}
+                                    </span>
+                                    <button className='todo-section__remove-todo btn' onClick={() => removeTodo(index)}><img src="/icon-cross.svg" alt="cross" />
+                                    </button>
                                 </li>
                             );
                         })}
                     </ul>
-                    <div>
-                        <span>{todos.filter(todo => !todo.completed).length} items left</span>
-                        <button onClick={() => filterTodos('all')}>All</button>
-                        <button onClick={() => filterTodos('active')}>Active</button>
-                        <button onClick={() => filterTodos('completed')}>Completed</button>
-                        <button onClick={() => filterTodos('ClearCompleted')}>Clear Completed</button>
+
+                    <span className='todo-section__items-left'>{todos.filter(todo => !todo.completed).length} items left</span>
+
+                    <div className='todo-section__actions'>
+                        <button className={`todo-section__buttons btn ${selectedAction === 'all' ? 'selected-action' : ''}`} onClick={() => filterTodos('all')}>All</button>
+                        <button className={`todo-section__buttons btn ${selectedAction === 'active' ? 'selected-action' : ''}`} onClick={() => filterTodos('active')}>Active</button>
+                        <button className={`todo-section__buttons btn ${selectedAction === 'completed' ? 'selected-action' : ''}`} onClick={() => filterTodos('completed')}>Completed</button>
+                        <button className='todo-section__buttons btn' onClick={() => filterTodos('ClearCompleted')}>Clear Completed</button>
                     </div>
                 </div>
             </section>

@@ -5,6 +5,10 @@
     box-sizing: border-box;
 }
 
+html {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
 /* Remove default margin */
 body,
 h1,

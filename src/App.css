@@ -1,0 +1,131 @@
+
+.btn {
+    all:unset
+}
+
+main {
+    height: 100vh;
+}
+
+#hero {
+    width: 100%;
+    height: 25%;
+}
+
+.hero__img {
+    width: 100%;
+    height: 100%;
+}
+
+#todo-section {
+    position: relative;
+    height: 100%;
+    background-color: hsl(235, 21%, 11%);
+}
+
+.todo-section__content {
+    position: absolute;
+    top: -25%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 2rem;
+}
+
+.todo-section__title {
+    color: hsl(236, 33%, 92%);
+    font-size: 1.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.todo-section__input {
+    color: hsl(236, 33%, 92%);
+}
+
+.todo-section__input, .todo-section__items-left {
+    border: none;
+    border-radius: 0.25rem;
+}
+
+.todo-section__input, .todo-section__items-left, .todo-section__list-item, .todo-section__actions {
+    background-color: hsl(235, 24%, 19%);
+    padding: 1rem 1.25rem;
+}
+
+.todo-section__input:focus {
+    outline: none;
+}
+
+.todo-section__list-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.todo-section__list-item:not(:last-child) {
+    border-bottom: 1px solid hsl(237.93, 15.18%, 37.45%);;
+}
+
+.todo-section__list-item:last-child{
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.todo-section__list-item:first-child {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.todo-section__change-status {
+    border-radius: 50%;
+    padding: 0.5rem;
+    border: 1px solid hsl(237.93, 15.18%, 37.45%);
+}
+
+.todo-section__change-status:hover {
+    cursor: pointer;
+    background-image: linear-gradient(
+        192deg,
+        hsl(192, 100%, 67%),
+        hsl(280, 87%, 65%)
+    )
+}
+
+.todo-section__todo-name {
+    color: hsl(236, 33%, 92%)
+}
+
+.todo-section__todo-name.completed {
+    text-decoration: line-through;
+    text-decoration-color: hsl(235, 14%, 55%);
+    color: hsl(237.93, 15.18%, 37.45%);
+}
+
+.todo-section__remove-todo {
+    cursor: pointer;
+}
+
+.todo-section__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    color: hsl(237.93, 15.18%, 37.45%);
+    font-weight: bold;
+}
+
+.todo-section__items-left {
+    text-align: center;
+    color: hsl(237.93, 15.18%, 37.45%);
+    font-weight: bold;
+}
+
+.todo-section__buttons:hover {
+    color: hsl(221.39deg 73.15% 42.35%);;
+}
+
+.todo-section__actions .selected-action {
+    color: hsl(221.39deg 73.15% 42.35%);;
+}
