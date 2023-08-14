@@ -1,34 +1,44 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { setTodos, addTodo, deleteTodo, toggleTodo, setDisplayedTodos, addDisplayedTodos, removeDisplayedTodos, completeDisplayedTodos, changeSelectedAction } from './todoSlice';
 import './App.css';
 
 interface Todos {
-    name: string,
+    id: number;
+    name: string;
     completed: boolean;
 }
 
 function App() {
     const [inputValue, setInputValue] = useState('');
-    const [todos, setTodos] = useState<Todos[]>([]);
-    const [displayedTodos, setDisplayedTodos] = useState<Todos[]>([]);
-    const [selectedAction, setSelectedAction] = useState('all');
+    const todos = useAppSelector(state => state.todos.todos);
+    const displayedTodos = useAppSelector(state => state.displayedTodos.todos);
+    const selectedAction = useAppSelector(state => state.selectedAction);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const localStorageData = localStorage.getItem('todos');
         if (localStorageData) {
-            setTodos(JSON.parse(localStorageData));
-            setDisplayedTodos(JSON.parse(localStorageData));
+            dispatch(setTodos(JSON.parse(localStorageData)));
+            dispatch(setDisplayedTodos(JSON.parse(localStorageData)));
         }
     }, []);
+
+    useEffect(() => {
+        if (todos.length <= 0) {
+            return;
+        }
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     };
 
     const handleSubmit = () => {
-        const newTodos = [...todos, { name: inputValue, completed: false }];
-        setTodos(newTodos);
-        setDisplayedTodos(newTodos);
-        localStorage.setItem('todos', JSON.stringify(newTodos));
+        const newTodo = { id: Date.now(), name: inputValue, completed: false };
+        dispatch(addTodo(newTodo));
+        dispatch(addDisplayedTodos(newTodo));
         setInputValue('');
     };
 
@@ -38,20 +48,14 @@ function App() {
         }
     };
 
-    const completeTodo = (index: number) => {
-        const newTodos = [...todos];
-        newTodos[index].completed = !newTodos[index].completed;
-        setTodos(newTodos);
-        setDisplayedTodos(newTodos);
-        localStorage.setItem('todos', JSON.stringify(newTodos));
+    const completeTodo = (todo: Todos) => {
+        dispatch(toggleTodo(todo));
+        dispatch(completeDisplayedTodos(todo));
     };
 
-    const removeTodo = (index: number) => {
-        const newTodos = [...todos];
-        newTodos.splice(index, 1);
-        setTodos(newTodos);
-        setDisplayedTodos(newTodos);
-        localStorage.setItem('todos', JSON.stringify(newTodos));
+    const removeTodo = (todo: Todos) => {
+        dispatch(deleteTodo(todo));
+        dispatch(removeDisplayedTodos(todo));
     };
 
     const filterTodos = (criteria: string) => {
@@ -59,22 +63,23 @@ function App() {
 
         if (criteria === 'completed') {
             newTodos = newTodos.filter(todo => todo.completed);
-            setSelectedAction('completed');
+            dispatch(changeSelectedAction('completed'));
         } else if (criteria === 'active') {
             newTodos = newTodos.filter(todo => !todo.completed);
-            setSelectedAction('active');
+            dispatch(changeSelectedAction('active'));
         } else if (criteria === 'ClearCompleted') {
             newTodos = newTodos.filter(todo => !todo.completed);
-            setTodos(newTodos);
+            dispatch(changeSelectedAction('completed'));
+            dispatch(setTodos(newTodos));
         } else if (criteria === 'all') {
-            setSelectedAction('all');
+            dispatch(changeSelectedAction('all'));
         }
 
         if (newTodos.length < 1) {
             return;
         }
 
-        setDisplayedTodos(newTodos);
+        dispatch(setDisplayedTodos(newTodos));
     };
 
     return (
@@ -93,14 +98,14 @@ function App() {
                         placeholder='Create a new todo...'
                     />
                     <ul className='todo-section__list' role='list'>
-                        {displayedTodos.map((todo, index) => {
+                        {displayedTodos.map(todo => {
                             return (
-                                <li className='todo-section__list-item' key={index}>
-                                    <button className='todo-section__change-status btn' onClick={() => completeTodo(index)}><img src="/icon-check.svg" alt="check" /></button>
+                                <li className='todo-section__list-item' key={todo.id}>
+                                    <button className='todo-section__change-status btn' onClick={() => completeTodo(todo)}><img src="/icon-check.svg" alt="check" /></button>
                                     <span className={`todo-section__todo-name ${todo.completed ? 'completed' : ''}`}>
                                         {todo.name}
                                     </span>
-                                    <button className='todo-section__remove-todo btn' onClick={() => removeTodo(index)}><img src="/icon-cross.svg" alt="cross" />
+                                    <button className='todo-section__remove-todo btn' onClick={() => removeTodo(todo)}><img src="/icon-cross.svg" alt="cross" />
                                     </button>
                                 </li>
                             );
