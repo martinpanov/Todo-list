@@ -1,6 +1,6 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { setTodos, addTodo, deleteTodo, toggleTodo, setDisplayedTodos, addDisplayedTodos, removeDisplayedTodos, completeDisplayedTodos, changeSelectedAction } from './todoSlice';
+import { setTodos, addTodo, deleteTodo, toggleTodo, setDisplayedTodos, addDisplayedTodo, removeDisplayedTodo, completeDisplayedTodo, changeSelectedAction } from './todoSlice';
 import './App.css';
 
 interface Todos {
@@ -11,34 +11,23 @@ interface Todos {
 
 function App() {
     const [inputValue, setInputValue] = useState('');
-    const todos = useAppSelector(state => state.todos.todos);
-    const displayedTodos = useAppSelector(state => state.displayedTodos.todos);
+    const { todos } = useAppSelector(state => state.todos);
+    const { displayedTodos } = useAppSelector(state => state.displayedTodos);
     const selectedAction = useAppSelector(state => state.selectedAction);
     const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        const localStorageData = localStorage.getItem('todos');
-        if (localStorageData) {
-            dispatch(setTodos(JSON.parse(localStorageData)));
-            dispatch(setDisplayedTodos(JSON.parse(localStorageData)));
-        }
-    }, []);
-
-    useEffect(() => {
-        if (todos.length <= 0) {
-            return;
-        }
-        localStorage.setItem('todos', JSON.stringify(todos));
-    }, [todos]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     };
 
     const handleSubmit = () => {
+        if (!inputValue) {
+            return;
+        }
+
         const newTodo = { id: Date.now(), name: inputValue, completed: false };
         dispatch(addTodo(newTodo));
-        dispatch(addDisplayedTodos(newTodo));
+        dispatch(addDisplayedTodo(newTodo));
         setInputValue('');
     };
 
@@ -50,12 +39,12 @@ function App() {
 
     const completeTodo = (todo: Todos) => {
         dispatch(toggleTodo(todo));
-        dispatch(completeDisplayedTodos(todo));
+        dispatch(completeDisplayedTodo(todo));
     };
 
     const removeTodo = (todo: Todos) => {
         dispatch(deleteTodo(todo));
-        dispatch(removeDisplayedTodos(todo));
+        dispatch(removeDisplayedTodo(todo));
     };
 
     const filterTodos = (criteria: string) => {
@@ -69,14 +58,10 @@ function App() {
             dispatch(changeSelectedAction('active'));
         } else if (criteria === 'ClearCompleted') {
             newTodos = newTodos.filter(todo => !todo.completed);
-            dispatch(changeSelectedAction('completed'));
+            dispatch(changeSelectedAction('all'));
             dispatch(setTodos(newTodos));
         } else if (criteria === 'all') {
             dispatch(changeSelectedAction('all'));
-        }
-
-        if (newTodos.length < 1) {
-            return;
         }
 
         dispatch(setDisplayedTodos(newTodos));
@@ -98,7 +83,7 @@ function App() {
                         placeholder='Create a new todo...'
                     />
                     <ul className='todo-section__list' role='list'>
-                        {displayedTodos.map(todo => {
+                        {displayedTodos.length > 0 ? displayedTodos.map(todo => {
                             return (
                                 <li className='todo-section__list-item' key={todo.id}>
                                     <button className='todo-section__change-status btn' onClick={() => completeTodo(todo)}><img src="/icon-check.svg" alt="check" /></button>
@@ -109,7 +94,9 @@ function App() {
                                     </button>
                                 </li>
                             );
-                        })}
+                        }) :
+                            null
+                        }
                     </ul>
 
                     <span className='todo-section__items-left'>{todos.filter(todo => !todo.completed).length} items left</span>

@@ -3,10 +3,6 @@
     all:unset
 }
 
-main {
-    height: 100vh;
-}
-
 #hero {
     width: 100%;
     height: 25%;
@@ -18,14 +14,14 @@ main {
 }
 
 #todo-section {
-    position: relative;
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    min-height: 75%;
     background-color: hsl(235, 21%, 11%);
 }
 
 .todo-section__content {
-    position: absolute;
-    top: -25%;
+    margin-top: -150px; 
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -129,11 +125,6 @@ main {
 @media (min-width: 768px) {
     .todo-section__content {
         max-width: 768px;
-    }
-
-    #todo-section {
-        display: flex;
-        justify-content: center;
     }
 }
 
