@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import reducers from "./todoSlice";
+import reducers from "./features/todoSlice";
 import { loadState, saveState } from "./localStorage";
 
 const persistedState = loadState();
@@ -16,7 +16,6 @@ export const store = configureStore({
 store.subscribe(() => {
     saveState(store.getState());
 });
-
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,6 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { setTodos, addTodo, deleteTodo, toggleTodo, setDisplayedTodos, addDisplayedTodo, removeDisplayedTodo, completeDisplayedTodo, changeSelectedAction } from './todoSlice';
+import { setTodos, addTodo, deleteTodo, toggleTodo, setDisplayedTodos, addDisplayedTodo, removeDisplayedTodo, completeDisplayedTodo, changeSelectedAction } from './features/todoSlice';
 import './App.css';
 
 interface Todos {
