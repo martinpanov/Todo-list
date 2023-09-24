@@ -1,27 +1,44 @@
-# React + TypeScript + Vite
+# Project Documentation: Weather App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This App is a single-page application built with React that allows users to add, remove, complete, filter to-dos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### The link to the website is http://martinp79.sg-host.com
 
-## Expanding the ESLint configuration
+![donttouchmydomain com_](https://github.com/martinpanov/Weather-App/assets/106311309/a1c270be-b387-4fdd-92da-381b70cea261)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technology Stack
 
-- Configure the top-level `parserOptions` property like this:
+ * React
+ * TypeScript
+ * Redux
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Project Architecture
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+ 1. React components:
+  * The app has one component called `App`. This component represents the entire application
+ 2. State management:
+  * The component uses React's `useState` hook to manage the `inputValue`, which represents the text input for adding new to-do items.
+  * Redux is used for state management. It imports hooks like `useAppDispatch` and `useAppSelector` from `./hooks` to interact with the Redux store.
+ 3. Redux Slice Actions:
+  * Redux actions related to to-do management are imported from `./features/todoSlice`. These actions include setting todos, adding, deleting, and toggling todos, managing displayed todos, and changing the selected action for filtering.
+ 4. Event Handlers:
+  * Event handlers are defined for input change `handleChange`, form submission `handleSubmit`, and keypress `handleKeyDown`.
+  * Functions like `completeTodo` and `removeTodo` are used to complete or remove to-do items.
+  * The `filterTodos` function filters and updates the displayed to-do items based on selected criteria.
+
+## Project Setup
+
+To set up the project locally, follow these steps:
+
+1. Clone the project repository from GitHub.
+2. Install the dependencies using `npm install`.
+4. Run the dev server using `npm run dev`.
+
+## Project Features
+
+ * Adding to-dos.
+ * Completing to-dos.
+ * Removing to-ddos
+ * Filtering to-dos
