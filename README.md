@@ -4,7 +4,7 @@
 
 This App is a single-page application built with React that allows users to add, remove, complete, filter to-dos.
 
-### The link to the website is http://martinp79.sg-host.com
+### The link to the website is https://martinp79.sg-host.com
 
 ![martinp79 sg-host com_](https://github.com/martinpanov/Todo-list/assets/106311309/5c0f60ae-1567-4d11-9be1-248a098c4ed9)
 
